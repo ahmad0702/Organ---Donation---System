@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>transplants</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+   
+
+  <body>
+     <script>
+      function myFunction() {
+        var buttons = document.getElementsByClassName("delete");
+
+        for (var i = 0; i < buttons.length; i ++) { 
+          if(buttons[i].style.display === "none")
+            buttons[i].style.display = "block";
+          else
+            buttons[i].style.display = "none"
+        }
+
+        deleteButton = document.getElementById("deleteButton")
+
+        if(deleteButton.style.display === "none")
+          deleteButton.style.display = "block";
+        else
+          deleteButton.style.display = "block";
+      }
+
+      function showTransplantationForm() {
+        var elems = document.getElementsByClassName("transplantation_form");
+
+        for(var i = 0; i < elems.length; i ++) {
+
+          if(elems[i].style.display === "none")
+            elems[i].style.display = "block";
+          else
+            elems[i].style.display = "none";
+        }
+      }
+    </script>
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+  
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('view_doctor') }}">Doctors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_patient') }}">Patients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{ url_for('view_donor') }}">Donors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('review_transplants')}}">Review Transplantation</a>
+      </li>
+      
+    </ul>
+    
+
+    
+  </div>
+</nav>
+<br><br><br>
+       <div style=" padding-left: 10px; padding-right: 10px; padding-top: 10px;padding-bottom: 10px;" >
+        {% if transplants|length > 0 %}
+     <div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table class="table table-striped table-dark table-bordered" style="opacity: 100%;">
+        <thead>
+        <tr>
+        <th scope="col">Donor ID</th>
+        <th scope="col">Donor Name</th>
+        <th scope="col">Patient ID</th>
+        <th scope="col">Patient Name</th>
+        <th scope="col">Organ Name</th>
+        <th scope="col">Transplantation Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in transplants %}
+            
+        <tr>
+            
+            <td><a href="{{ url_for('donor_details', donor_id = entry[0])}}">{{ entry[0]}}</a></td>
+            <td><a href="{{ url_for('donor_details', donor_id = entry[0])}}">{{ entry[1]}}</a></td>
+            <td><a href="{{ url_for('patient_details', patient_id = entry[2])}}">{{ entry[2]}}</a></td>
+            <td><a href="{{ url_for('patient_details', patient_id = entry[2])}}">{{ entry[3]}}</a></td>
+            <td>{{ entry[4]}}</a></td>
+            <td>{{ entry[5]}}</a></td>
+        </tr>
+    
+        
+        {% endfor %}
+    </tbody>
+    </table>
+  </div>
+  {% else %}
+  <h4>No Transplantation Record Available</h4>
+    {% endif %}
+  </div>
+    </body>
+</html>

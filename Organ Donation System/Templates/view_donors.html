@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>donors</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+
+    <script>
+        function myFunction(show) {
+            var forms = document.getElementsByClassName("search");
+    
+            for (var i = 0; i < forms.length; i ++) {
+              forms[i].style.display = "none";
+            }
+
+            var reqForm = document.getElementsByClassName(show)[0];
+            reqForm.style.display = "block";
+        }
+      </script>
+
+
+
+
+     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+  
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link " href="{{ url_for('view_doctor') }}">Doctors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_patient') }}">Patients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('view_donor') }}">Donors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('review_transplants')}}">Review Transplantation</a>
+      </li>
+    </ul>
+
+    
+  </div>
+</nav>
+    <div>
+        <div id="donor_list">
+            <br><br><br>
+            <h4>View Donors</h4>
+    {% if donors|length > 0 %}
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table class="table table-striped table-dark table-bordered">
+        <thead>
+        <tr>
+      <th scope="col">Donor ID</th>
+      <th scope="col">Donor Name</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for donor in donors %}
+            
+        <tr>
+            
+            <td><a href="{{ url_for('donor_details', donor_id = donor[0])}}">{{ donor[0]}}</a></td>
+            <td><a href="{{ url_for('donor_details', donor_id = donor[0])}}">{{ donor[1]}}</a></td>
+            
+        </tr>
+    
+        
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+   
+    {% endif %}
+
+      <br>
+      <button onclick="myFunction('id')">Search by ID</button>
+      <button onclick="myFunction('name')">Search by Name</button>
+      <button onclick="myFunction('city')">Search by City</button>
+      <button onclick="myFunction('state')">Search by State</button>
+
+      <form method="post" action="{{ url_for('search_donor', type='all') }}">
+        <input type="submit" value="View All Donors">
+      </form>
+      <br>
+
+      <form class="search id" style="display:none" method="post" action="{{ url_for('search_donor', type='id') }}">
+        <div class="form-group">
+        <input type="number" name="donor_id" id="donor_id" required placeholder="Donor ID" class="form-control">
+        </div>
+        <input type="submit" value="Search">
+      </form>
+
+      <form class="search name" style="display:none" method="post" action="{{ url_for('search_donor', type='name') }}">
+        <div class="form-group">
+        <input name="donor_name" type="text" id="donor_name" required placeholder="Donor Name" class="form-control">
+        </div>
+        <input type="submit" value="Search"> 
+      </form>
+     
+      <form class="search city" style="display:none" method="post" action="{{ url_for('search_donor', type='city') }}">
+        <label for="city" >City</label>
+        <select id="city" name="city" class="form-control">
+          {% for location in locations %}
+            <option value="{{ location[:location.find(',')] }}">{{ location[:location.find(',')] }}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="Search">
+      </form>
+      
+      <form class="search state" style="display:none" method="post" action="{{ url_for('search_donor', type='state') }}">
+        <label for="state">State</label>
+        <select id="state" name="state" class="form-control">
+          {% for location in locations %}
+            <option value="{{ location[location.find(',') + 2:] }}">{{ location[location.find(',') + 2:] }}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="Search"> 
+      </form>
+
+
+
+
+
+    </div>
+
+    <div id="new_donor">
+     <br><br><br>
+     <div style="border-style: solid; border-color: white; padding-left: 10px; padding-right: 10px; padding-top: 10px;padding-bottom: 10px;">
+    <form method="post" action="{{ url_for('add_new_donor') }}">
+        <div class="form-group">
+        <input name="donor_name" type="text" id="donor_name" placeholder="Donor Name" class="form-control">
+        </div>
+        <div class="form-group">
+        <label for="date_of_birth">Date of Birth</label><br>
+        <input type="date" name="date_of_birth" id="date_of_birth" required class="form-control">
+        </div>
+        <div class="form-group">
+        <input type="text" name="house_no" id="house_no" class="form-control" placeholder="House No.">
+        </div>
+        <div class="form-group">
+        <input type="text" name="street_no" id="street_no" class="form-control" placeholder="Street No.">
+        </div>
+        <div class="form-group">
+        
+          <select id="location" name="location">
+            <option value="" class="form-control">Location</option>
+            {% for location in locations %}
+              <option value="{{ location }}" class="form-control">{{ location }}</option>
+            {% endfor%}  
+          </select>
+        </div>
+       <div class="form-group">
+         
+        <input name="contact" type="text" id="contact" placeholder="Contact Number(s) [Space separated]" class="form-control">
+      </div>
+        <div class="form-group">
+        <select id="organ_id" name="organ_id">
+             <option value="" class="form-control">Organ ID</option>
+          {% for organ in organs %}
+            <option value="{{ organ[0]}}" class="form-control">{{ organ[1] }}</option>
+          {% endfor%}
+        </select>
+        </div>
+        <div class="form-group">
+        <label for="date_of_donation">Date of Donation</label><br>
+        <input type="date" name="date_of_donation" id="date_of_donation" required class="form-control">
+        </div>
+        <div class="form-group">
+        <label for="date_of_expiry">Date of Expiry</label><br>
+        <input type="date" name="date_of_expiry" id="date_of_expiry" class="form-control">
+         </div>
+          <input name="organisation_id" value="{{ organisation_id }}" style="display:none">
+         
+        <input type="submit" value="Add New Donor">
+    </form>
+  </div>
+    </div>
+</div>
+    
+</body>
+</html>
+  

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>doctors</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+    
+   <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+  
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link active" href="{{ url_for('view_doctor') }}">Doctors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_patient') }}">Patients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_donor') }}">Donors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('review_transplants')}}">Review Transplantation</a>
+      </li>
+    </ul>
+
+    
+  </div>
+</nav>
+<div>
+<div id="doctor_list">
+     <br>
+     <br>
+     <br>
+    {% if doctor_data|length > 0 %}
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table class="table table-striped table-dark table-bordered">
+         <thead>
+    <tr>
+      <th scope="col">Doctor ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Specialisation</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for data in doctor_data %}
+        
+    <tr>
+      <td>{{data[0]}}</td>
+      <td>{{data[1]}}</td>
+      <td>{{data[2]}}</td>
+    </tr>
+   
+  
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <h3 >No Doctors Available</h3>
+    {% endif %}
+    <br><br><br>
+    </div>
+
+    <div id="new_doctor">
+        <br><br><br>
+        <div style="border-style: solid; border-color: white; padding-left: 10px; padding-right: 10px; padding-top: 10px;padding-bottom: 10px;">
+    <form method="post" action="{{ url_for('add_doctor') }}">
+        
+        <div class="form-group">
+        <input name="doctor_name" type="text" id="doctor_name" placeholder="Doctor name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label><br>
+        <input type="date" name="date_of_birth" id="date_of_birth" placeholder="date of birth" class="form-control" >
+        </div>
+        <div class="form-group">
+             <label for="date_of_birth">Date of Joining</label><br>
+        <input type="date" name="date_of_joining" id="date_of_joining" placeholder="date of joining" class="form-control" required>
+        </div>
+        <div class="form-group">
+        <input type="text" name="highest_degree" id="highest_degree" placeholder="Highest degree" class="form-control" required>
+        </div>
+        <div class="form-group">
+        <select id="organ_id" name="organ_id" required>
+            <option value="" class="form-control" >Specialisation</option>
+          {% for organ in organs %}
+          
+            <option value="{{ organ[0] }}" class="form-control">{{ organ[1] }}</option>
+          {% endfor%}  
+        </select>
+        </div>
+        <div class="form-group">
+         
+        <input name="contact" type="text" id="contact" placeholder="Contact Number(s) [Space separated]" class="form-control">
+      </div>
+        <div class="form-group">
+        <input type="password" name="pass" id="pass" class="form-control" placeholder="Set password">
+        </div>
+        <input type="submit" value="Add New Doctor">
+    </form>
+  </div>
+    </div>
+     <footer>
+       {{msg}}
+   </footer>
+</div>
+
+
+  
+</body>
+</html>
+  

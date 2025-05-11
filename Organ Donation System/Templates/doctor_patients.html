@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>doctor-{{doctor[0]}}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+    <body>
+
+      <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+  {% if org_login == True %}
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ url_for('view_doctor') }}">Doctors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('view_patient') }}">Patients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{ url_for('view_donor') }}">Donors</a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('review_transplants')}}">Review Transplantation</a>
+      </li>
+      {% endif %}
+    </ul>
+    <span class="navbar-text">
+      {{ doctor[0] }}
+    </span>
+
+    
+  </div>
+</nav>
+       <div >
+      <div id="patient_details">
+        <br><br><br>
+        <div style="border-style: solid; border-color: white; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+    <p>Doctor Name  : {{ doctor[0] }} </p>
+    <p>Highest Degree : {{ doctor[1] }} </p>
+    <p>Date of Birth : {{ doctor[2] }} </p>
+    <p>Date of Joining : {{ doctor[3] }} </p>
+    <p>Contact Number : {% for contact in doctor[6] %}
+                        {{contact[0]}} ,
+                        {% endfor %} </p>
+    <p>Organisation Name : {{ doctor[4] }} , {{doctor[5]}} </p>
+
+      </div>
+
+      
+    </div>
+      
+
+      <div id="patient_trans">
+        <br><br><br>
+      
+      <div style="border-style: solid; border-color: white; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+            
+      {% if patients|length > 0 %}
+        <h2>Patients under your Consultantation</h2>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+    <table class="table table-striped table-dark table-bordered">
+      <thead>
+            <tr>
+                <th scope="col">Patient ID</th>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Start of Consultantation</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+            </tr>
+      </thead>
+      <tbody>      
+            
+            {% for patient in patients %}
+            <tr>
+                <td>{{patient[0]}}</td>
+                <td>{{patient[1]}}</td>
+                <td>{{patient[2]}}</td>
+                <td>{{patient[3]}}</td>
+                <td>{{patient[4]}}</td>
+                <td>{{patient[5]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+      </div>
+      
+      
+      
+   
+    </div>
+ {% if org_login == False %}
+     <footer>
+        <p>{{ msg }}</p>
+    </footer>
+    {% endif %}
+    
+
+  </div>
+</div>
+    </body>
+</html>
+
+
+
+
+
+
+     

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>home</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+    <script>
+        function myFunction(num) {
+            var forms = document.getElementsByClassName("login");
+    
+            for (var i = 0; i < forms.length; i ++) 
+            {
+                if(i == num)
+              forms[i].style.display = "block";
+                else
+                    forms[i].style.display = "none";
+            }
+
+           
+        }
+      </script>
+      <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" onclick="myFunction(0)">App</a>
+  
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item ">
+        <a class="nav-link" onclick="myFunction(0)" >Organisation Login</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" onclick="myFunction(1)" >Organisation Signup</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" onclick="myFunction(2)" >Patient Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="myFunction(3)" >Patient Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="myFunction(4)" >Doctor Login</a>
+      </li>
+    </ul>
+    
+
+    
+  </div>
+</nav>
+<br><br><br>
+        <p >{{msg}}</p>
+     <div class="index_page">
+
+        <div class="login fadeIn" style="display: none; height: 300px;">
+        <h3>Organisation Log In</h3>
+    
+
+    
+    <form method="post" action="{{ url_for('login', user='org') }}">
+        <div class="form-group">
+        <input name="organisation_id" id="organisation_id" type="text" class="form-control" placeholder="Organisation id" required>
+        </div>
+        <div class="form-group"> 
+        <input type="password" name="Pass" id="Pass" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Log In">Submit</button>
+    </form>
+   
+  
+        </div>
+
+
+        <div class="login fadeIn" style="display: none; height: 600px;">
+            <h3>Organisation Signup</h3>
+
+             <form method="post" action="{{ url_for('add_new_organisation') }}">
+
+       <div class="form-group">
+        <input name="organisation_name" type="text" id="organisation_name" required placeholder="Organisation Name" class="form-control">
+    </div>
+
+       <div class="form-group">
+        <input name="head_name" id="head_name" type="text" placeholder="Head Name" class="form-control">
+    </div>
+
+        <div class="form-group">
+        <input name="office_no" id="office_no" type="text" placeholder="Office Number" class="form-control">
+    </div>
+        <div class="form-group">
+        <input name="street_no" id="street_no" type="text" placeholder="Street No." class="form-control">
+      </div>
+               <div class="form-group">
+                
+        <input name="contact" id="contact" placeholder="Contact Numbers [Space separated]" class="form-control" type="text">
+               </div>
+        <div class="form-group">
+        
+        <select id="location" name="location">
+          <option value=""  class="form-control">Location</option>
+            {% for location in locations %}
+              <option value="{{ location }}"  class="form-control">{{ location }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+        
+        <input type="password" name="Pass" id="Pass" required placeholder="Password" class="form-control">
+
+       <button type="submit" class="btn btn-primary" value="Sign Up">Submit</button>
+    </form>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="login fadeIn" style="display: none; height: 500px;">
+        <h3>Patient Log In</h3>
+
+
+    
+    <form method="post" action="{{ url_for('login', user='patient') }}">
+        <div class="form-group">
+        <input name="patient_id" id="patient_id" placeholder="Patient Id" type="text" class="form-control" required>
+        </div>
+        <div class="form-group"> 
+        <input type="password" name="Pass" id="Pass" class="form-control" placeholder="Password" required>
+        </div>
+
+        <div class="form-group">
+        <select id="organisation_id" name="organisation_id">
+          <option value=""  class="form-control">Organisation</option>
+           {% for organisation in organisations %}
+            <option value="{{ organisation[0] }}" class="form-control">{{ organisation[1] }}, {{ organisation[2] }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" value="Log In">Submit</button>
+    </form>
+</div>
+    <div class="login fadeIn" style="display: none; height: 800px;">
+        <h3>Patient Sign Up</h3>
+   
+
+    
+    <form method="post" action="{{ url_for('add_new_patient', signup = 'true') }}" >
+        <div class="form-group">
+        <input name="patient_name" id="patient_name" type="text" placeholder="Patient name" class="form-control">
+        </div>
+         <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label>
+        <input type="date" name="date_of_birth" id="date_of_birth" placeholder="date of birth" class="form-control" required>
+        </div>
+        <div class="form-group">
+        <input name="insurance_no" type="text" id="insurance_no" placeholder="Insurance No." class="form-control" >
+        </div>
+
+        <div class="form-group">
+        <input name="house_no" id="house_no" type="text" placeholder="House No." class="form-control" >
+        </div>
+
+        <div class="form-group">
+        <input name="street_no" id="street_no" type="text" placeholder="Street No." class="form-control" >
+        </div>
+        
+        <div class="form-group">
+        <select id="location" name="location" >
+          <option value=""  class="form-control">Location</option>
+            {% for location in locations %}
+              <option value="{{ location }}">{{ location }}</option>
+            {% endfor %}
+        </select>
+        </div>
+       <div class="form-group">
+                
+        <input name="contact" id="contact" placeholder="Contact Numbers [Space separated]" class="form-control"  type="text">
+               </div>
+
+        <div class="form-group">
+        <select id="organisation_id" name="organisation_id">
+          <option value=""  class="form-control">Organisation</option>
+            {% for organisation in organisations %}
+            <option value="{{ organisation[0] }}">{{ organisation[1] }}, {{ organisation[2] }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="form-group">
+        <input type="password" name="Pass" id="Pass" placeholder="password" class="form-control" required><br>
+        </div>
+       <button type="submit" class="btn btn-primary" value="Log In">Submit</button>
+    </form>
+    </div>
+
+
+    <div class="login fadeIn" style="display: none; height: 300px;">
+        <h3>Doctor Login</h3>
+
+      <form method="post" action="{{ url_for('doctor_login') }}">
+       <div class="form-group">
+        <input name="doctor_id" id="doctor_id" required type="text" placeholder="Doctor ID" class="form-control">
+        </div>
+        <div class="form-group">
+        <input type="password" name="Pass" id="Pass" placeholder="password" required class="form-control"><br>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Log In">Submit</button>
+    </form>
+  </div>
+
+
+</div>
+   
+ 
+
+   
+    
+</body>    
+</html>
